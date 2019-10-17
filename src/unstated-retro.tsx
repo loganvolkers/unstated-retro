@@ -27,6 +27,9 @@ type InstanceOrClass<L extends LegacyContainer<State>, State extends object> =
 	| {
 			new (): L
 	  }
+	| {
+			new (initialState: State): L
+	  }
 
 export function createRetroContainer<
 	L extends LegacyContainer<State>,
@@ -44,10 +47,11 @@ export function createRetroContainer<
 				// @ts-ignore
 				instance = instanceOrClass
 			} else {
-				// @ts-ignore
 				if (props.initialState) {
+					// @ts-ignore
 					instance = new instanceOrClass(props.initialState)
 				} else {
+					// @ts-ignore
 					instance = new instanceOrClass()
 				}
 			}
