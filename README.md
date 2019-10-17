@@ -1,33 +1,30 @@
 # Unstated Retro
 
-> Retrofit your `unstated` container to feel like `unstated-next` until you can fully swap
-
-|                    | [unstated](https://github.com/jamiebuilds/unstated)                                                | [unstated-next](https://github.com/jamiebuilds/unstated-next) | **unstated-retro**                 |
-| ------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------- |
-| `Container`        | Class                                                                                              | Hooks                                                         | **Class**                          |
-| Inject an instance | [yes](https://github.com/jamiebuilds/unstated#passing-your-own-instances-directly-to-subscribe-to) | no                                                            | **yes**                            |
-| `<Provider/>`      | - Provide any `Container`                                                                          | Provides only a `Container`                                   | Provides only a single `Container` |
-| `<Consumer/>`      | Provides all containers                                                                            | Provides only a single container                              | Provides only a single container   |
-| Consumer API       | Render Props                                                                                       | Hooks                                                         | **Hooks OR Render Props**          |
+> Retrofit your existing `unstated` container. Feels like `unstated-next`. Bridge the gap until you can swap.
 
 ### Motivation
 
-[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new containers, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some super sticky containers that percolate throughout your code.
+[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new projects, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some containers that aren't quick to rewrite and replace.
 
-This package seeks to bridge that gap so that you can.
+This package seeks to bridge that gap via a "child-first" migration. You can start rewriting child components to use hooks, and then eventually rewrite your container in the style of `unstated-next`. It aims to be API compatible with `unstated-next` for a smooth migration from (unstated + retro) to pure `unstated-next`.
 
-> **If you are working on a new project please use [unstated-next](https://github.com/jamiebuilds/unstated-next).**
 
-### Migration From Unstated
+### Comparison to `unstated` and `unstated-next`
 
-The purpose of this library it to gracefully migrate people from Unstated to Unstated Next, and then to die.
+|               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
+|---------------|--------------|---------------|-----------------------|
+| Container | `class CounterContainer extends Container`        | `let Container = createContainer(customHook)`         | `let RetroContainer = createRetroContainer(CounterContainer)`               |
+| Provider | `<Provider>` | `<Container.Provider>` | `<RetroContainer.Provider>` |
+| Subscribe | `<Subscribe>` | `Container.useContainer()` |  `RetroContainer.useContainer()`  |
+| Tunnel | - | - |  `<RetroContainer.Tunnel>`  |
+| React Version | `^15.0` | `^16.8` | `^16.8` |
 
-There are three challenges with migrating from Unstated to Unstated Next.
+The way to inject containers in `unstated-retro` matches the style of `unstated-next`.
 
-- Containers are written as classes
-- Consumers use the render props API
-
-To solve this, we need to first move all the consumers, and then move over the containers. Unfortunately, sometimes we can't refactor all of our code, so we might need some consumers render props, while new consumers use hooks, until finally every consumer uses hooks. Once every consumer uses hooks, then the container can be migrated.
+|               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
+|---------------|--------------|---------------|-----------------------|
+| What is provided |  Any `Container` class | The `customHook` passed to `createContainer` |  The `Container` passed to `createRetroContainer` |
+| Inject an instance | `<Provider inject={[instance]}>` [docs](https://github.com/jamiebuilds/unstated#passing-your-own-instances-directly-to-subscribe-to) | - | `createContainer(instance)` |
 
 ## Install
 
@@ -39,15 +36,14 @@ npm install --save unstated-retro
 
 ```js
 import React, { useState } from "react"
-import { createContainer } from "../src/unstated-retro"
 import { render } from "react-dom"
-import { Container } from "unstated"
+import { Container } from 'unstated';
+import { createRetroContainer } from "unstated-retro"
 
 type CounterState = {
   count: number,
 }
 
-// This container may also be used via the old API
 class CounterContainer extends Container<CounterState> {
   state = {
     count: 0,
@@ -62,33 +58,26 @@ class CounterContainer extends Container<CounterState> {
   }
 }
 
-let Counter = createContainer(CounterContainer)
+let RetroContainer = createRetroContainer(CounterContainer)
 
-// But new component can use the new API
 function CounterDisplay() {
-  let counter = Counter.useContainer()
-  return (
-    <div>
-      <button onClick={counter.decrement}>-</button>
-      <span>{counter.count}</span>
-      <button onClick={counter.increment}>+</button>
-    </div>
-  )
+	let counter = RetroContainer.useContainer()
+	return (
+		<div>
+			<button onClick={counter.decrement}>-</button>
+			<span>{counter.count}</span>
+			<button onClick={counter.increment}>+</button>
+		</div>
+	)
 }
 
 function App() {
-  return (
-    <Counter.Provider>
-      <CounterDisplay />
-      <Counter.Provider initialState={2}>
-        <div>
-          <div>
-            <CounterDisplay />
-          </div>
-        </div>
-      </Counter.Provider>
-    </Counter.Provider>
-  )
+	return (
+		<RetroContainer.Provider>
+			<CounterDisplay />
+			<CounterDisplay />
+		</RetroContainer.Provider>
+	)
 }
 
 render(<App />, document.getElementById("root"))
@@ -96,10 +85,9 @@ render(<App />, document.getElementById("root"))
 
 ## API
 
-### `createContainer(useHook)`
+### `createRetroContainer(ContainerOrInstance)`
 
 ```js
-// This container may also be used via the old API
 class CounterContainer extends Container<CounterState> {
   state = {
     count: 0,
@@ -114,27 +102,102 @@ class CounterContainer extends Container<CounterState> {
   }
 }
 
-let Container = createContainer(CounterContainer)
-// Container === { Provider, useContainer }
-```
-
-### `<Container.Provider>`
-
-```js
-function ParentComponent() {
-  return (
-    <Container.Provider>
-      <ChildComponent />
-    </Container.Provider>
-  )
-}
+let RetroContainer = createRetroContainer(CounterContainer)
+// RetroContainer === { Provider, Tunnel, useContainer }
 ```
 
 ### `Container.useContainer()`
 
 ```js
 function ChildComponent() {
-  let input = Container.useContainer()
+  let input = RetroContainer.useContainer()
   return <input value={input.value} onChange={input.onChange} />
 }
 ```
+
+`useContainer` is designed to match the style of `unstated-next`
+
+### `<Container.Tunnel>`
+
+```js
+let RetroContainer = createRetroContainer(CounterContainer)
+// RetroContainer === { Provider, Tunnel, useContainer }
+
+function ParentComponent() {
+  return (
+    <Provider>
+      <RetroContainer.Tunnel>
+	<CounterDisplay />
+	<CounterDisplay />
+      </RetroContainer.Tunnel>
+      <CounterDisplay />
+    </Provider>
+  )
+}
+```
+
+Bridges the context from a wrapper `Provider` via a `Tunnel` to a child using `useContainer`
+
+### `<Container.Provider>`
+
+```js
+function ParentComponent() {
+  return (
+    <RetroContainer.Provider>
+      	<CounterDisplay />
+    </RetroContainer.Provider>
+  )
+}
+```
+
+Replaces `<Provider/>` from `unstated`.
+
+
+### `<Container.Provider>` injected instance
+
+```js
+const counter = new CounterContainer(); // Global instance
+let RetroContainer = createRetroContainer(counter)
+// RetroContainer === { Provider, Tunnel, useContainer }
+
+function ParentComponent() {
+  return (
+    <RetroContainer.Provider>
+      <CounterDisplay />
+    </RetroContainer.Provider>
+  )
+}
+```
+> See also [passing your own instances in `unstated`](https://github.com/jamiebuilds/unstated#passing-your-own-instances-directly-to-subscribe-to)
+
+
+
+### How do I use an existing `unstated` container?
+
+**I need new shared state using an existing container**
+
+Use `<RetroContainer.Provider>` from `unstated-retro` in your **new** parent components, and `useContainer` in your **new** child components.
+
+**I am building a new child component**
+
+Use `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent components, and `useContainer` in your **new** child components.
+
+**I want to slowly migrate**
+
+ 1. Use `unstated-retro`
+     - Create a `RetroContainer` with `createRetroContainer(LegacyContainer)`
+     - Add `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent components
+ 2. Start writing **new** child components using `useContainer`.
+ 3. Replace `<Subscribe/>`
+     - Migrate **existing** child components from `<Subscribe/>` to `useContainer`.
+ 4. Replace `<Provider/>
+     - Confirm all child components use `useContainer` instead of `<Subscribe/>`
+     - Swap from `<Provider><RetroContainer.Tunnel>` to just `<RetroContainer.Provider>`
+ 5. Migrate to `unstated-next`
+     - Confirm all parent components use `<RetroContainer.Provider>` instead of `<Provider>`
+     - Rewrite your `LegacyContainer` as a hook
+     - Switch from `createRetroContainer` to `createContainer`
+
+**I'm building something completely new**
+
+Don't use this library, use `unstated-next`. Celebrate that you're not bogged down by supporting legacy `unstated` containers.
