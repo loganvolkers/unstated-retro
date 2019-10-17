@@ -1,7 +1,7 @@
 {
 	"name": "unstated-retro",
 	"version": "1.0.0",
-	"description": "300 bytes to bridge the gap from unstated to unstated-next",
+	"description": "615 bytes to bridge the gap from unstated to unstated-next",
 	"source": "src/unstated-retro.tsx",
 	"main": "dist/unstated-retro.js",
 	"module": "dist/unstated-retro.mjs",
@@ -12,14 +12,15 @@
 	"scripts": {
 		"format": "prettier --write '**'",
 		"example": "parcel example/index.html --out-dir example/dist",
-		"build": "rm -rf dist && microbundle --external react --globals react=React --strict --no-compress",
+		"build": "rm -rf dist && microbundle --external react,unstated --globals react=React,unstated=Unstated --strict --no-compress",
 		"test": "ava"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"peerDependencies": {
-		"unstated":"^2.0.0"
+		"unstated": "^2.0.0",
+		"react": "^16.8.6"
 	},
 	"devDependencies": {
 		"@types/react": "^16.8.15",
@@ -28,6 +29,7 @@
 		"husky": "^2.1.0",
 		"lint-staged": "^8.1.5",
 		"microbundle": "^0.11.0",
+		"np": "^5.1.1",
 		"parcel": "^1.12.3",
 		"prettier": "^1.17.0",
 		"react": "^16.8.6",
@@ -45,5 +47,8 @@
 			"prettier --write",
 			"git add"
 		]
+	},
+	"dependencies": {
+		"unstated": "^2.1.1"
 	}
 }
