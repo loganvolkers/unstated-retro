@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container as LegacyContainer } from "unstated";
 
-export interface ContainerProviderProps<State extends object> {
+export interface ContainerProviderProps {
   children: React.ReactNode;
 }
 
@@ -9,7 +9,7 @@ export interface Container<
   L extends LegacyContainer<State>,
   State extends object
 > {
-  Provider: React.ComponentType<ContainerProviderProps<State>>;
+  Provider: React.ComponentType<ContainerProviderProps>;
   useContainer: () => L;
 }
 
@@ -20,32 +20,32 @@ type InstanceOrClass<L extends LegacyContainer<State>, State extends object> =
     };
 
 export function createRetroContainer<
-  Cls extends InstanceOrClass<L, State>,
   L extends LegacyContainer<State>,
   State extends object
->(instanceOrClass: Cls): Container<LegacyContainer<State>, State> {
-  let instance;
-  if (
-    typeof instanceOrClass === "object" &&
-    instanceOrClass instanceof LegacyContainer
-  ) {
-    instance = instanceOrClass;
-  } else {
-    // @ts-ignore
-    instance = new instanceOrClass();
-  }
-  let initialValue = { container: instance, state: instance.state };
-  let Context = React.createContext<{ container: L; state: State }>(
-    initialValue
-  );
+>(instanceOrClass: InstanceOrClass<L, State>): Container<L, State> {
+  let Context = React.createContext<{ container: L; state: State }>(null);
 
-  function Provider(props: ContainerProviderProps<State>) {
+  function Provider(props: ContainerProviderProps) {
+    const [instance] = useState<L>(() => {
+      let instance: L;
+      if (
+        typeof instanceOrClass === "object" &&
+        instanceOrClass instanceof LegacyContainer
+      ) {
+        // @ts-ignore
+        instance = instanceOrClass;
+      } else {
+        // @ts-ignore
+        instance = new instanceOrClass();
+      }
+      return instance;
+    });
     const [state, setState] = useState<State>(null);
     useEffect(() => {
       const listener = () => setState(instance.state);
       instance.subscribe(listener);
       return () => instance.unsubscribe(listener);
-    }, []);
+    }, [instance]);
     const updateValue = { container: instance, state };
     return (
       <Context.Provider value={updateValue}>{props.children}</Context.Provider>
