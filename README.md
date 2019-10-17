@@ -2,12 +2,13 @@
 
 > Retrofit your existing `unstated` container. Feels like `unstated-next`. Bridge the gap until you can swap.
 
+ - [Demo](https://codesandbox.io/s/reverse-unstated-migration-example-fy7yp?fontsize=14)
+
 ### Motivation
 
 [unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new projects, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some containers that aren't quick to rewrite and replace.
 
 This package seeks to bridge that gap via a "child-first" migration. You can start rewriting child components to use hooks, and then eventually rewrite your container in the style of `unstated-next`. It aims to be API compatible with `unstated-next` for a smooth migration from (unstated + retro) to pure `unstated-next`.
-
 
 ### Comparison to `unstated` and `unstated-next`
 
