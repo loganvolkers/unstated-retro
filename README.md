@@ -32,9 +32,9 @@ npm install --save unstated-retro
 
 ```js
 import React, { useState } from "react"
-import { createRetroContainer } from "unstated-retro"
 import { render } from "react-dom"
 import { Container } from 'unstated';
+import { createRetroContainer } from "unstated-retro"
 
 type CounterState = {
   count: number
