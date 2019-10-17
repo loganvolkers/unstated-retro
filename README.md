@@ -191,7 +191,7 @@ Use `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent 
  2. Start writing **new** child components using `useContainer`.
  3. Replace `<Subscribe/>`
      - Migrate **existing** child components from `<Subscribe/>` to `useContainer`.
- 4. Replace `<Provider/>
+ 4. Replace `<Provider/>`
      - Confirm all child components use `useContainer` instead of `<Subscribe/>`
      - Swap from `<Provider><RetroContainer.Tunnel>` to just `<RetroContainer.Provider>`
  5. Migrate to `unstated-next`
