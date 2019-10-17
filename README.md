@@ -13,14 +13,16 @@ This package seeks to bridge that gap via a "child-first" migration. You can sta
 
 |               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
 |---------------|--------------|---------------|-----------------------|
-| `Container` | `class CounterContainer extends Container`        | `let Container = createContainer(customHook)`         | `let RetroContainer = createRetroContainer(CounterContainer)`               |
-| Provide | `<Provider>` | `createContainer(customHook)` | `createContainer()` |
+| Container | `class CounterContainer extends Container`        | `let Container = createContainer(customHook)`         | `let RetroContainer = createRetroContainer(CounterContainer)`               |
+| Provider | `<Provider>` | `<Container.Provider>` | `<RetroContainer.Provider>` |
 | Subscribe | `<Subscribe>` | `Container.useContainer()` |  `RetroContainer.useContainer()`  |
+| Tunnel | - | - |  `<RetroContainer.Tunnel>`  |
 | React Version | `^15.0` | `^16.8` | `^16.8` |
 
 The way to inject containers in `unstated-retro` matches the style of `unstated-next`.
 
 |               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
+|---------------|--------------|---------------|-----------------------|
 | What is provided |  Any `Container` class | The `customHook` passed to `createContainer` |  The `Container` passed to `createRetroContainer` |
 | Inject an instance | `<Provider inject={[instance]}>` [docs](https://github.com/jamiebuilds/unstated#passing-your-own-instances-directly-to-subscribe-to) | - | `createContainer(instance)` |
 
@@ -183,14 +185,19 @@ Use `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent 
 
 **I want to slowly migrate**
 
- 1. Create a `RetroContainer` with `createRetroContainer(LegacyContainer)`
- 2. Add `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent components
- 3. Start writing **new** child components using `useContainer`.
- 4. Migrate **existing** child components from `<Subscribe/>` to `useContainer`.
- 5. Confirm all child components use `useContainer` instead of `<Subscribe/>`
- 6. Swap from `<Provider><RetroContainer.Tunnel>` to just `<RetroContainer.Provider>`
- 7. Confirm all parent components use `<RetroContainer.Provider>` instead of `<Provider>`
- 8. Migrate from `createRetroContainer` to `createContainer`
+ 1. Use `unstated-retro`
+     - Create a `RetroContainer` with `createRetroContainer(LegacyContainer)`
+     - Add `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent components
+ 2. Start writing **new** child components using `useContainer`.
+ 3. Replace `<Subscribe/>`
+     - Migrate **existing** child components from `<Subscribe/>` to `useContainer`.
+ 4. Replace `<Provider/>
+     - Confirm all child components use `useContainer` instead of `<Subscribe/>`
+     - Swap from `<Provider><RetroContainer.Tunnel>` to just `<RetroContainer.Provider>`
+ 5. Migrate to `unstated-next`
+     - Confirm all parent components use `<RetroContainer.Provider>` instead of `<Provider>`
+     - Rewrite your `LegacyContainer` as a hook
+     - Switch from `createRetroContainer` to `createContainer`
 
 **I'm building something completely new**
 
