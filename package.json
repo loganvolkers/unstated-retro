@@ -1,13 +1,13 @@
 {
-	"name": "unstated-next",
-	"version": "1.1.0",
-	"description": "200 bytes to never think about React state management libraries ever again",
-	"source": "src/unstated-next.tsx",
-	"main": "dist/unstated-next.js",
-	"module": "dist/unstated-next.mjs",
-	"unpkg": "dist/unstated-next.umd.js",
-	"types": "dist/unstated-next.d.ts",
-	"amdName": "UnstatedNext",
+	"name": "unstated-retro",
+	"version": "1.0.0",
+	"description": "300 bytes to bridge the gap from unstated to unstated-next",
+	"source": "src/unstated-retro.tsx",
+	"main": "dist/unstated-retro.js",
+	"module": "dist/unstated-retro.mjs",
+	"unpkg": "dist/unstated-retro.umd.js",
+	"types": "dist/unstated-retro.d.ts",
+	"amdName": "UnstatedRetro",
 	"sideEffects": false,
 	"scripts": {
 		"format": "prettier --write '**'",
@@ -18,6 +18,9 @@
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
+	"peerDependencies": {
+		"unstated":"^2.0.0"
+	},
 	"devDependencies": {
 		"@types/react": "^16.8.15",
 		"@types/react-dom": "^16.8.4",
