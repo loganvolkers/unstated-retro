@@ -1,6 +1,6 @@
 {
 	"name": "unstated-retro",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "615 bytes to bridge the gap from unstated to unstated-next",
 	"source": "src/unstated-retro.tsx",
 	"main": "dist/unstated-retro.js",
