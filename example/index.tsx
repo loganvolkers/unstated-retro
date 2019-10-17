@@ -1,15 +1,27 @@
 import React, { useState } from "react"
-import { createContainer } from "../src/unstated-next"
+import { createContainer } from "../src/unstated-retro"
 import { render } from "react-dom"
+import { Container } from 'unstated';
 
-function useCounter(initialState = 0) {
-	let [count, setCount] = useState(initialState)
-	let decrement = () => setCount(count - 1)
-	let increment = () => setCount(count + 1)
-	return { count, decrement, increment }
+type CounterState = {
+  count: number
+};
+
+class CounterContainer extends Container<CounterState> {
+  state = {
+    count: 0
+  };
+
+  increment() {
+    this.setState({ count: this.state.count + 1 });
+  }
+
+  decrement() {
+    this.setState({ count: this.state.count - 1 });
+  }
 }
 
-let Counter = createContainer(useCounter)
+let Counter = createContainer(CounterContainer)
 
 function CounterDisplay() {
 	let counter = Counter.useContainer()
