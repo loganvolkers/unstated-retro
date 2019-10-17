@@ -4,9 +4,9 @@
 
 ### Motivation
 
-[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new containers, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some super sticky containers that percolate throughout your code.
+[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new projects, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some containers that aren't a one-shot replacement.
 
-This package seeks to bridge that gap so that you can gradually migrate child components from `unstated` the new `unstated-next` syntax. It aims to be API compatible with `unstated-next`.
+This package seeks to bridge that gap so that you can gradually migrate child components from `unstated` to the new `unstated-next` syntax. It aims to be API compatible with `unstated-next`.
 
 
 ### Comparison to `unstated` and `unstated-next`
@@ -20,18 +20,6 @@ This package seeks to bridge that gap so that you can gradually migrate child co
 | `<Consumer/>` | Provides all containers | Provides only a single container |  Provides only a single container |
 | Consumer API  | Render Props | Hooks         | **Hooks OR Render Props** |
 | React Version | `^15.0` | `^16.8` | `^16.8` |
-
-
-### Migration From Unstated
-
-The purpose of this library it to gracefully migrate people from Unstated to Unstated Next, and then to die.
-
-There are three challenges with migrating from Unstated to Unstated Next.
-
- * Containers are written as classes
- * Consumers use the render props API
-
-To solve this, we need to first move all the consumers, and then move over the containers. Unfortunately, sometimes we can't refactor all of our code, so we might need some consumers render props, while new consumers use hooks, until finally every consumer uses hooks. Once every consumer uses hooks, then the container can be migrated.
 
 
 ## Install
@@ -135,8 +123,10 @@ function ParentComponent() {
   return (
     <Provider>
       <RetroContainer.Tunnel>
-        <ChildComponent />
+	<CounterDisplay />
+	<CounterDisplay />
       </RetroContainer.Tunnel>
+      <CounterDisplay />
     </Provider>
   )
 }
@@ -150,7 +140,7 @@ Bridges the context from a wrapper `Provider` via a `Tunnel` to a child using `u
 function ParentComponent() {
   return (
     <RetroContainer.Provider>
-      <ChildComponent />
+      	<CounterDisplay />
     </RetroContainer.Provider>
   )
 }
@@ -169,7 +159,7 @@ let RetroContainer = createRetroContainer(counter)
 function ParentComponent() {
   return (
     <RetroContainer.Provider>
-      <ChildComponent />
+      <CounterDisplay />
     </RetroContainer.Provider>
   )
 }
