@@ -2,6 +2,15 @@
 
 > Retrofit your existing `unstated` container. Feels like `unstated-next`. Bridge the gap until you can swap.
 
+### Motivation
+
+[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new containers, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some super sticky containers that percolate throughout your code.
+
+This package seeks to bridge that gap so that you can gradually migrate child components from `unstated` the new `unstated-next` syntax. It aims to be API compatible with `unstated-next`.
+
+
+### Comparison to `unstated` and `unstated-next`
+
 |               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
 |---------------|--------------|---------------|-----------------------|
 | `Container` | `class CounterContainer extends Container`        | `function useCustomHook(){`         | `class CounterContainer extends Container`               |
@@ -11,13 +20,6 @@
 | `<Consumer/>` | Provides all containers | Provides only a single container |  Provides only a single container |
 | Consumer API  | Render Props | Hooks         | **Hooks OR Render Props** |
 | React Version | `^15.0` | `^16.8` | `^16.8` |
-
-
-### Motivation
-
-[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new containers, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some super sticky containers that percolate throughout your code.
-
-This package seeks to bridge that gap so that you can gradually migrate child components from `unstated` the new `unstated-next` syntax. It aims to be API compatible with `unstated-next`.
 
 
 ### Migration From Unstated
