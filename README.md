@@ -17,9 +17,8 @@
 
 [unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new containers, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some super sticky containers that percolate throughout your code.
 
-This package seeks to bridge that gap so that you can.
+This package seeks to bridge that gap so that you can gradually migrate child components from `unstated` the new `unstated-next` syntax. It aims to be API compatible with `unstated-next`.
 
-> **If you are working on a new project please use [unstated-next](https://github.com/jamiebuilds/unstated-next).**
 
 ### Migration From Unstated
 
@@ -189,15 +188,15 @@ Use `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent 
 
 **I want to slowly migrate**
 
- 0. Create a `RetroContainer` with `createRetroContainer`
- 1. Add `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent components
- 2. Start writing **new** child components using `useContainer`.
- 3. Migrate **existing** child components from `<Subscribe/>` to `useContainer`.
- 4. Confirm all child components use `useContainer` instead of `<Subscribe/>`
- 5. Swap from `<Provider><RetroContainer.Tunnel>` to just `<RetroContainer.Provider>`
- 6. Confirm all parent components use `<RetroContainer.Provider>` instead of `<Provider>`
- 7. Migrate from `unstated
- 
+ 1. Create a `RetroContainer` with `createRetroContainer(LegacyContainer)`
+ 2. Add `<RetroContainer.Tunnel>` from `unstated-retro` in your **existing** parent components
+ 3. Start writing **new** child components using `useContainer`.
+ 4. Migrate **existing** child components from `<Subscribe/>` to `useContainer`.
+ 5. Confirm all child components use `useContainer` instead of `<Subscribe/>`
+ 6. Swap from `<Provider><RetroContainer.Tunnel>` to just `<RetroContainer.Provider>`
+ 7. Confirm all parent components use `<RetroContainer.Provider>` instead of `<Provider>`
+ 8. Migrate from `createRetroContainer` to `createContainer`
+
 **I'm building something completely new**
 
 Don't use this library, use `unstated-next`. Celebrate that you're not bogged down by supporting legacy `unstated` containers.
