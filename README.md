@@ -4,22 +4,25 @@
 
 ### Motivation
 
-[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new projects, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some containers that aren't a one-shot replacement.
+[unstated-next](https://github.com/jamiebuilds/unstated-next) is great for new projects, but if you've been using [unstated](https://github.com/jamiebuilds/unstated) for awhile, you probably already have some containers that aren't quick to rewrite and replace.
 
-This package seeks to bridge that gap so that you can gradually migrate child components from `unstated` to the new `unstated-next` syntax. It aims to be API compatible with `unstated-next`.
+This package seeks to bridge that gap via a "child-first" migration. You can start rewriting child components to use hooks, and then eventually rewrite your container in the style of `unstated-next`. It aims to be API compatible with `unstated-next` for a smooth migration from (unstated + retro) to pure `unstated-next`.
 
 
 ### Comparison to `unstated` and `unstated-next`
 
 |               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
 |---------------|--------------|---------------|-----------------------|
-| `Container` | `class CounterContainer extends Container`        | `function useCustomHook(){`         | `class CounterContainer extends Container`               |
-| `<Provider/>` |  Provide any `Container` | Provides only a `Container` |  Provides only a single `Container` |
-| Inject an instance | `<Provider inject={[instance]}>` [docs](https://github.com/jamiebuilds/unstated#passing-your-own-instances-directly-to-subscribe-to) | - | `createContainer(instance)` |
-|  | `<Provider>` | `createContainer(customHook)` | `createContainer()` |
-| `<Consumer/>` | Provides all containers | Provides only a single container |  Provides only a single container |
-| Consumer API  | Render Props | Hooks         | **Hooks OR Render Props** |
+| `Container` | `class CounterContainer extends Container`        | `let Container = createContainer(customHook)`         | `let RetroContainer = createRetroContainer(CounterContainer)`               |
+| Provide | `<Provider>` | `createContainer(customHook)` | `createContainer()` |
+| Subscribe | `<Subscribe>` | `Container.useContainer()` |  `RetroContainer.useContainer()`  |
 | React Version | `^15.0` | `^16.8` | `^16.8` |
+
+The way to inject containers in `unstated-retro` matches the style of `unstated-next`.
+
+|               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | [unstated-retro](https://github.com/loganvolkers/unstated-retro)        |
+| What is provided |  Any `Container` class | The `customHook` passed to `createContainer` |  The `Container` passed to `createRetroContainer` |
+| Inject an instance | `<Provider inject={[instance]}>` [docs](https://github.com/jamiebuilds/unstated#passing-your-own-instances-directly-to-subscribe-to) | - | `createContainer(instance)` |
 
 
 ## Install
