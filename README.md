@@ -1,11 +1,14 @@
 # Unstated Retro
 
-> Migrate from Unstated to Unstated Next without a full rewrite.
+> Retrofit your `unstated` container to feel like `unstated-next` until you can fully swap
 
-|               | [Unstated](https://github.com/jamiebuilds/unstated)     | [Unstated Next](https://github.com/jamiebuilds/unstated-next)  | **Unstated Retro**        |
+|               | [unstated](https://github.com/jamiebuilds/unstated)     | [unstated-next](https://github.com/jamiebuilds/unstated-next)  | **unstated-retro**        |
 |---------------|--------------|---------------|-----------------------|
 | Container API | Class        | Hooks         | **Class**                 |
 | Consumer API  | Render Props | Hooks         | **Hooks OR Render Props** |
+
+
+> **If you are working on a new project please use [unstated-next](https://github.com/jamiebuilds/unstated-next).**
 
 
 ### Migration From Unstated
