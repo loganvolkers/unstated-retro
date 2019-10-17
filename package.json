@@ -13,7 +13,7 @@
 		"format": "prettier --write '**'",
 		"example": "parcel example/index.html --out-dir example/dist",
 		"build": "rm -rf dist && microbundle --external react,unstated --globals react=React,unstated=Unstated --strict --no-compress",
-		"test": "ava"
+		"test": "echo \"No test specified\""
 	},
 	"keywords": [],
 	"author": "",
